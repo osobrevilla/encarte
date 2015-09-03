@@ -251,33 +251,43 @@ ol {
 .grid .f {
     width: 475px;
 }
-.grid .f  h1 { display: none}
+.grid .f  .title,
+.grid .f  .brand,
+.grid .f  .price,
+.grid .f  .bb { display: none}
 
 .grid  a {text-decoration: none;}
 .grid .price { background-color: red; position: absolute; right: 0; top: 2em; padding: .2em; color:white; }
-.grid .title { font-family: Prelo; margin:0; padding: .1em; font-size: 120%; background: #666; color:white; display: inline-block; }
-.grid .brand { font-family: Prelo; padding: .1em; font-size: 90%; background: #DDD; color:#666; display: inline-block; margin: .5em;}
+.grid .title { font-family: Prelo; margin:0; padding: .1em; font-size: 100%; background: #666; color:white; display: inline-block; }
+.grid .brand { font-family: Prelo; padding: .1em; font-size: 80%; background: #DDD; color:#666; display: inline-block; margin: .5em;}
 .grid .bb { text-align: center; position: absolute; bottom: 0; left:0; width: 100%; z-index: 1; bottom: 0;}
 
 
 .grid .dss {
-    width: 715px;
+    
 }
 
 .grid .sss {
-    width: 355px;
+    
 }
 
 .grid .tttt {
-    width: 265px;
+    
 }
 
-.grid img {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  display: block;
-  border:  0 none;
+.grid .image {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    background-repeat: no-repeat;
+    background-size: 98% 98%;
+    background-position: center center;
+    border-bottom: solid 1px #ddd;
+    border-right: solid 1px #ddd;
+    left: 1px;
+    right: 1px;
+    bottom: 1px;
+    top: 1px;
 }
 
 .grid li {
@@ -336,6 +346,12 @@ ol {
     -webkit-transition-delay: 0.1s;
     -moz-transition-delay: 0.1s;
     transition-delay: 0.1s
+}
+
+.grid li>*:not(.clients_close):nth-child(3) {
+    -webkit-transition-delay: 0.25s;
+    -moz-transition-delay: 0.25s;
+    transition-delay: 0.25s
 }
 .grid li.active>*:not(.clients_close),
 .grid li.past>*:not(.clients_close) {

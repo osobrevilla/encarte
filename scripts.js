@@ -36,9 +36,17 @@ var app = {
         var tailImage = new Image();
         tailImage.onload = function() {
             tailImage.onload = null;
+            tail.size = {
+            	width: this.width,
+            	height: this.height
+            };
             fn.call(that, tailImage);
         };
         tailImage.src = tail.img;
+    },
+
+    getRatioSize: function(wW, wH, targetWidth, targetHeight) {
+        return (wH / wW) > (targetHeight / targetWidth) ? wW / targetWidth : wH / targetHeight;
     },
 
     loadTails: function(tails, obj) {
@@ -73,7 +81,15 @@ var app = {
                 		var col = that.createDOMCol(nextBlock);
     					that.dom.grid.appendChild(col);
                 		for (var t in nextBlock.tails){
+                			// var scale = that.getRatioSize()
+                			// var tail = nextBlock.tails[t];
+                			// var r = document.body.offsetHeight / tail.size.height;
+
+                			// col.style.height = r*nextBlock.tails[t].size.height + "px";
+                			// col.style.width = r*nextBlock.tails[t].size.width + "px";
+                			
                 			col.appendChild(that.createDOMTail(nextBlock.tails[t]));	
+                			 that._updateTails();
                 		}
 
                 		onload();
@@ -102,7 +118,7 @@ var app = {
     createDOMTail: function(data) {
 		var tailHTML = 
 	              '<article><a href="'+data.link+'">'+
-	                  '<img src="'+data.img+'" />'+
+	                  '<div class="image" style="background-image:url('+ data.img +');"></div>'+
 	                  '<div class="bb"><h1 class="title">'+data.title+'</h1>'+
 	                  '<div></div>'+
 	                  '<p class="brand">'+data.brand+'</p>'+
@@ -124,6 +140,7 @@ var app = {
             //     el.style.backgroundColor = "#" + Math.random().toString(16).slice(2, 8);
             // });
         });
+
     },
 
     _wheel: function(e) {
@@ -140,14 +157,25 @@ var app = {
     },
 
     _scroll: function(e) {
-        console.log("scroll", document.body.scrollLeft);
         this._updateTails();
     },
 
+    _resize: function(){
+    	 this._updateTails();
+    },
+
     _updateTails: function() {
-        document.body.scrollLeft;
-        document.body.offsetWidth;
-        this.dom.grid.offsetWidth;
+        // document.body.scrollLeft;
+        // document.body.offsetWidth;
+        // this.dom.grid.offsetWidth;
+
+         var el = this.dom.grid.getElementsByTagName("li");
+        for (var i = el.length - 1; i >= 0; i--) {
+            var _l= (el[i].offsetLeft- document.body.scrollLeft);
+ 		if(_l < document.documentElement.clientWidth - ((el[i].clientWidth /2)) && _l >= (el[i].clientWidth *-1) ){
+                el[i].classList.add("active");
+            }else el[i].classList.remove("active");
+        };
     },
 
     handleEvent: function(e) {
@@ -155,6 +183,9 @@ var app = {
             case 'scroll':
                 this._scroll(e);
                 break;
+            case 'resize':
+            	this._resize(e);
+            break;
             case 'wheel':
             case 'DOMMouseScroll':
             case 'mousewheel':
