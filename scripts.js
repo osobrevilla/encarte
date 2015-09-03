@@ -147,16 +147,16 @@ var app = {
     },
 
     _wheel: function(e) {
-        // if (!e) e = event;
-        // var direction = (e.detail < 0 || e.wheelDelta > 0) ? 1 : -1;
+        if (!e) e = event;
+        var direction = (e.detail < 0 || e.wheelDelta > 0) ? 1 : -1;
 
-        // if (direction == 1)
-        //     document.body.scrollLeft -= 30;
-        // else
-        //     document.body.scrollLeft += 30;
+        if (direction == 1)
+            document.body.scrollLeft -= 30;
+        else
+            document.body.scrollLeft += 30;
 
-        // e.preventDefault();
-        // return false;
+        e.preventDefault();
+        return false;
     },
 
     _scroll: function(e) {
