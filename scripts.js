@@ -16,6 +16,7 @@ var app = {
         // Firefox
         document.body.addEventListener("DOMMouseScroll", this, false);
         window.addEventListener("scroll", this, false);
+        window.addEventListener("resize", this, false);
     },
 
     toDOMObject: function(html) {
