@@ -281,8 +281,6 @@ ol {
 }
 
 .grid .image {
-    height: 100%;
-    width: 100%;
     position: absolute;
     background-repeat: no-repeat;
     background-size: auto 82%;
@@ -291,8 +289,8 @@ ol {
     border-right: solid 1px #ddd;
     left: 1px;
     right: 1px;
-    bottom: 1px;
-    top: 1px;
+    bottom: 0;
+    top: 0;
 }
 
 .grid li {
