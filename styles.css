@@ -285,7 +285,7 @@ ol {
     width: 100%;
     position: absolute;
     background-repeat: no-repeat;
-    background-size: 98% 98%;
+    background-size: auto 82%;
     background-position: center center;
     border-bottom: solid 1px #ddd;
     border-right: solid 1px #ddd;
