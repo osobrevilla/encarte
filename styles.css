@@ -263,8 +263,8 @@ ol {
 
 .grid  a {text-decoration: none;}
 .grid .price { background-color: red; position: absolute; right: 0; top: 2em; padding: .2em; color:white; }
-.grid .title { font-family: Prelo; margin:0; padding: .1em; font-size: 100%; background: #666; color:white; display: inline-block; }
-.grid .brand { font-family: Prelo; padding: .1em; font-size: 80%; background: #DDD; color:#666; display: inline-block; margin: .5em;}
+.grid .title { font-family: Prelo; margin:0; padding: .1em .5em; font-size: 100%; background: #888; color:white; display: inline-block; }
+.grid .brand { font-family: Prelo; padding: .1em .5em; font-size: 80%; background: #DDD; color:#666; display: inline-block; margin: .5em;}
 .grid .bb { text-align: center; position: absolute; bottom: 0; left:0; width: 100%; z-index: 1; bottom: 0;}
 
 

@@ -1,6 +1,5 @@
 var app = {
 
-
     init: function(e) {
         this.dom = {};
         this.tailsLoaded = [];
@@ -12,9 +11,9 @@ var app = {
 
     bindEvents: function() {
         // IE9, Chrome, Safari, Opera
-        document.body.addEventListener("mousewheel", this, false);
+        window.addEventListener("mousewheel", this, false);
         // Firefox
-        document.body.addEventListener("DOMMouseScroll", this, false);
+        window.addEventListener("DOMMouseScroll", this, false);
         window.addEventListener("scroll", this, false);
         window.addEventListener("resize", this, false);
     },
@@ -24,8 +23,8 @@ var app = {
         return this.dom.div.removeChild(this.dom.div.firstChild);
     },
 
-    addTailLoaded: function(tail){
-    	this.tailsLoaded.push(tail);
+    addTailLoaded: function(tail) {
+        this.tailsLoaded.push(tail);
     },
 
     loadTail: function(tail, fn) {
@@ -38,8 +37,8 @@ var app = {
         tailImage.onload = function() {
             tailImage.onload = null;
             tail.size = {
-            	width: this.width,
-            	height: this.height
+                width: this.width,
+                height: this.height
             };
             fn.call(that, tailImage);
         };
@@ -67,41 +66,44 @@ var app = {
         this.loadTail(tails[c], onload);
     },
 
-    write: function(data, obj){
-    	var that = this;
-    	var c = -1;
-
+    write: function(data, obj) {
+        var that = this;
+        var c = -1;
 
         function onload() {
-            var nextBlock = data[++c];
-            if (nextBlock) {
- 
-                that.loadTails(nextBlock.tails, {
-                	readyOne: function(){},
-                	end: function(){
-                		var col = that.createDOMCol(nextBlock);
-    					that.dom.grid.appendChild(col);
-                		for (var t in nextBlock.tails){
-                			// var scale = that.getRatioSize()
-                			// var tail = nextBlock.tails[t];
-                			// var r = document.body.offsetHeight / tail.size.height;
+            var nextCol = data[++c];
+            if (nextCol) {
 
-                			// col.style.height = r*nextBlock.tails[t].size.height + "px";
-                			// col.style.width = r*nextBlock.tails[t].size.width + "px";
-                			
-                			col.appendChild(that.createDOMTail(nextBlock.tails[t]));	
-                			 that._updateTails();
-                		}
+                that.loadTails(nextCol.tails, {
+                    readyOne: function() {},
+                    end: function() {
+                        var col = that.addCol(nextCol);
+                        for (var t in nextCol.tails) {
+                            if (nextCol.type == "f") {
+                                // var scale = that.getRatioSize()
+                                var tail = nextCol.tails[t];
+                                var r = document.body.offsetHeight / tail.size.height;
 
-                		onload();
-                	}
+                                col.style.height = r * nextCol.tails[t].size.height + "px";
+                                col.style.width = r * nextCol.tails[t].size.width + "px";
+                            }
+                            col.appendChild(that.createDOMTail(nextCol.tails[t]));
+                            that._updateTails();
+                        }
+
+                        onload();
+                    }
                 });
             }
         }
-        
+
         onload();
     },
-
+    addCol: function(dataCol) {
+        var col = this.createDOMCol(dataCol);
+        this.dom.grid.appendChild(col);
+        return col;
+    },
 
     buildAll: function(tails) {
         var t;
@@ -111,22 +113,22 @@ var app = {
         }
         return tails;
     },
-    createDOMCol: function(data){
-    	var li = document.createElement('li');
-    	li.className = data.type;
-    	return li;
+    createDOMCol: function(data) {
+        var li = document.createElement('li');
+        li.className = data.type;
+        return li;
     },
     createDOMTail: function(data) {
-		var tailHTML = 
-	              '<article><a href="'+data.link+'">'+
-	                  '<div class="image" style="background-image:url('+ data.img +');"></div>'+
-	                  '<div class="bb"><h1 class="title">'+data.title+'</h1>'+
-	                  '<div></div>'+
-	                  '<p class="brand">'+data.brand+'</p>'+
-	                  '</div><span class="price">'+data.price+'</span>'+
-	              '</a></article>';
-	            
-		return this.toDOMObject(tailHTML);
+        var tailHTML =
+            '<article><a href="' + data.link + '">' +
+            '<div class="image" style="background-image:url(' + data.img + ');"></div>' +
+            '<div class="bb"><h1 class="title">' + data.title + '</h1>' +
+            '<div></div>' +
+            '<p class="brand">' + data.brand + '</p>' +
+            '</div><span class="price">' + data.price + '</span>' +
+            '</a></article>';
+
+        return this.toDOMObject(tailHTML);
     },
 
     fetch: function(fn) {
@@ -134,7 +136,7 @@ var app = {
     },
 
     render: function() {
-    	var that = this;
+        var that = this;
         this.fetch(function(data) {
             that.write(data);
             // tailDoms.map(function(el) {
@@ -145,24 +147,24 @@ var app = {
     },
 
     _wheel: function(e) {
-        if (document.body.doScroll)
-            document.body.doScroll(e.wheelDelta > 0 ? "left" : "right");
-        else if ((e.wheelDelta || e.detail) > 0)
-            document.body.scrollLeft -= 30;
-        else
-            document.body.scrollLeft += 30;
+        // if (!e) e = event;
+        // var direction = (e.detail < 0 || e.wheelDelta > 0) ? 1 : -1;
 
-        e.preventDefault();
+        // if (direction == 1)
+        //     document.body.scrollLeft -= 30;
+        // else
+        //     document.body.scrollLeft += 30;
 
-        return false;
+        // e.preventDefault();
+        // return false;
     },
 
     _scroll: function(e) {
         this._updateTails();
     },
 
-    _resize: function(){
-    	 this._updateTails();
+    _resize: function() {
+        this._updateTails();
     },
 
     _updateTails: function() {
@@ -170,12 +172,12 @@ var app = {
         // document.body.offsetWidth;
         // this.dom.grid.offsetWidth;
 
-         var el = this.dom.grid.getElementsByTagName("li");
+        var el = this.li = this.li || this.dom.grid.getElementsByTagName("li");
         for (var i = el.length - 1; i >= 0; i--) {
-            var _l= (el[i].offsetLeft- document.body.scrollLeft);
- 		if(_l < document.documentElement.clientWidth - ((el[i].clientWidth /2)) && _l >= (el[i].clientWidth *-1) ){
+            var _l = (el[i].offsetLeft - document.body.scrollLeft);
+            if (_l < document.documentElement.clientWidth - ((el[i].clientWidth / 2)) && _l >= (el[i].clientWidth * -1)) {
                 el[i].classList.add("active");
-            }else el[i].classList.remove("active");
+            } else el[i].classList.remove("active");
         };
     },
 
@@ -185,8 +187,8 @@ var app = {
                 this._scroll(e);
                 break;
             case 'resize':
-            	this._resize(e);
-            break;
+                this._resize(e);
+                break;
             case 'wheel':
             case 'DOMMouseScroll':
             case 'mousewheel':
