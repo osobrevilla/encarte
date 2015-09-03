@@ -84,8 +84,8 @@ var app = {
                                 var tail = nextCol.tails[t];
                                 var r = document.body.offsetHeight / tail.size.height;
 
-                                col.style.height = r * nextCol.tails[t].size.height + "px";
-                                col.style.width = r * nextCol.tails[t].size.width + "px";
+                                col.style.height = r * tail.size.height + "px";
+                                col.style.width = r * tail.size.width + "px";
                             }
                             col.appendChild(that.createDOMTail(nextCol.tails[t]));
                             that._updateTails();
@@ -173,12 +173,19 @@ var app = {
         // this.dom.grid.offsetWidth;
 
         var el = this.dom.grid.children;
+        
+        var tail = cols[0].tails[0];
+        var r = document.body.offsetHeight / tail.size.height;
+
         for (var i = el.length - 1; i >= 0; i--) {
             var _l = (el[i].offsetLeft - document.body.scrollLeft);
             if (_l < document.documentElement.clientWidth - ((el[i].clientWidth / 2)) && _l >= (el[i].clientWidth * -1)) {
                 el[i].classList.add("active");
             } else el[i].classList.remove("active");
         };
+
+        el[0].style.height = r * tail.size.height + "px";
+        el[0].style.width = r * tail.size.width + "px";
     },
 
     handleEvent: function(e) {
