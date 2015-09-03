@@ -172,7 +172,7 @@ var app = {
         // document.body.offsetWidth;
         // this.dom.grid.offsetWidth;
 
-        var el = this.li = this.li || this.dom.grid.getElementsByTagName("li");
+        var el = this.dom.grid.children;
         for (var i = el.length - 1; i >= 0; i--) {
             var _l = (el[i].offsetLeft - document.body.scrollLeft);
             if (_l < document.documentElement.clientWidth - ((el[i].clientWidth / 2)) && _l >= (el[i].clientWidth * -1)) {
