@@ -251,6 +251,11 @@ ol {
 .grid .f {
     width: 475px;
 }
+
+.grid .f .image{
+  background-size: 100% 100%;
+}
+
 .grid .f  .title,
 .grid .f  .brand,
 .grid .f  .price,
