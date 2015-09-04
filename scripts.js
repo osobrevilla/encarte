@@ -160,6 +160,7 @@ var app = {
     _wheel: function(e) {
         var d = wheelDistance(e);
         document.body.scrollLeft -= 100 * d;
+        e.preventDefault();
         return false;
     },
     _scroll: function(e) {
