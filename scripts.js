@@ -1,3 +1,13 @@
+var wheelDistance = function(evt) {
+    if (!evt) evt = event;
+    var w = evt.wheelDelta,
+        d = evt.detail;
+    if (d) {
+        if (w) return w / d / 40 * d > 0 ? 1 : -1; // Opera
+        else return -d / 3; // Firefox;         TODO: do not /3 for OS X
+    } else return w / 120; // IE/Safari/Chrome TODO: /3 for Chrome OS X
+};
+
 var app = {
 
     init: function(e) {
@@ -7,6 +17,7 @@ var app = {
         this.dom.grid = document.querySelectorAll(".grid").item(0);
         this.bindEvents();
         this.render();
+        this.startScrollLeft = document.body.scrollLeft;
     },
 
     bindEvents: function() {
@@ -147,45 +158,37 @@ var app = {
     },
 
     _wheel: function(e) {
-        if (!e) e = event;
-        var direction = (e.detail < 0 || e.wheelDelta > 0) ? 1 : -1;
-
-        if (direction == 1)
-            document.body.scrollLeft -= 30;
-        else
-            document.body.scrollLeft += 30;
-
-        e.preventDefault();
+        var d = wheelDistance(e);
+        document.body.scrollLeft -= 100 * d;
         return false;
     },
-
     _scroll: function(e) {
-        this._updateTails();
+        this._updateTails(e);
     },
 
-    _resize: function() {
-        this._updateTails();
+    _resize: function(e) {
+        this._updateTails(e);
     },
 
-    _updateTails: function() {
+    _updateTails: function(e) {
         // document.body.scrollLeft;
         // document.body.offsetWidth;
         // this.dom.grid.offsetWidth;
 
-        var el = this.dom.grid.children;
-        
-        var tail = cols[0].tails[0];
-        var r = document.body.offsetHeight / tail.size.height;
+        var children = this.dom.grid.children,
+        	firstTail = cols[0].tails[0],
+        	deltaX,
+        	r = document.body.offsetHeight / firstTail.size.height;
 
-        for (var i = el.length - 1; i >= 0; i--) {
-            var _l = (el[i].offsetLeft - document.body.scrollLeft);
-            if (_l < document.documentElement.clientWidth - ((el[i].clientWidth / 2)) && _l >= (el[i].clientWidth * -1)) {
-                el[i].classList.add("active");
-            } else el[i].classList.remove("active");
-        };
+        for (var i = children.length - 1; i >= 0; i--) {
+            deltaX = (children[i].offsetLeft - document.body.scrollLeft);
+            if (deltaX < document.documentElement.clientWidth) {
+                children[i].classList.add("active");
+            } else children[i].classList.remove("active");
+        }
 
-        el[0].style.height = r * tail.size.height + "px";
-        el[0].style.width = r * tail.size.width + "px";
+        children[0].style.height = r * firstTail.size.height + "px";
+        children[0].style.width = r * firstTail.size.width + "px";
     },
 
     handleEvent: function(e) {
